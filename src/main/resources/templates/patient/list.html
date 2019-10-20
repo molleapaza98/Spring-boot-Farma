@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="layout/layout :: head"></head>
+<body>
+	<header th:replace="layout/layout :: header"></header>
+	
+	<div class="container">
+	
+	<div class="card">
+			<div class="card-header text-white bg-primary">Paciente</div>
+			<div class="card-body">
+				<form th:action="@{/patients/search}" method="get">
+					<div class="form-row align-items-center">
+						<div class="col-auto">
+							<Label class="sr-only" for="inputDni">Dni</Label> <input
+								id="inputDni" type="text" class="form-control form-control-lg"
+								name="dni" placeholder="Dni del paciente">
+						</div>
+						<div class="col-auto">
+							<button type="submit" class="btn btn-primary">Buscar</button>
+						</div>
+					</div>
+				</form>
+
+				<div class="table-responsive">
+					<table class="table table-striped">
+						<thead class="bg-primary text-white">
+							<tr>
+								<th>Id</th>
+								<th>Nombre</th>
+								<th>Apellido</th>
+								<th>Dni</th>
+								<th sec:authorize="hasRole('ROLE_ADMIN')">Generar</th>
+								<th>Ver</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="patient:${patients}">
+								<td th:text="${patient.id}"></td>
+								<td th:text="${patient.firstname}"></td>
+								<td th:text="${patient.lastname}"></td>
+								<td th:text="${patient.dni}"></td>
+								<td sec:authorize="hasRole('ROLE_ADMIN')">
+									<a th:href="@{'/vouchers/form/' + ${patient.id}}"
+									class="btn btn-primary"> Voucher</a></td>
+								<td><a th:href="@{'/patients/detail/' + ${patient.id}}"
+									class="btn btn-primary">Detalle</a></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	
+	</div>
+	
+	<footer th:replace="layout/layout :: footer"></footer>
+</body>
+</html>

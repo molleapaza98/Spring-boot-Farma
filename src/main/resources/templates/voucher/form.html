@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="layout/layout :: head"></head>
+<body>
+	<header th:replace="layout/layout :: header"></header>
+
+	<div class="container">
+		<form th:action="@{/vouchers/save}" th:object="${voucher}"
+			method="post">
+			<div class="card">
+				<div class="card-header text-white bg-primary">Voucher</div>
+				<div class="card-body">
+					<div class="form-group row">
+						<label for="patient" class="col-sm-2 col-form-label">Paciente</label>
+						<div class="col-sm-6">
+							<input type="text" readonly class="form-control-plaintext"
+								id="patient"
+								th:value="${voucher.patientId.firstname} +' '+ ${voucher.patientId.lastname}">
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="medicinename" class="col-sm-2 col-form-label">Medicamento</label>
+						<div class="col-sm-6">
+							<input type="text" name="searchmedicament" class="form-control"
+								id="medicinename" placeholder="Medicamento a buscar">
+						</div>
+					</div>
+				</div>
+				
+			</div>
+			<div class="form-group row">
+				<div class="col-sm-6">
+					<a th:href="@{/patients/list}" class="btn btn-primary">Regresar</a>
+				</div>
+			</div>
+			<div class="card">
+				<div class="card-header text-white bg-primary">Detalle</div>
+				<div class="card-body">
+
+					<div class="table-responsive">
+						<table id="loadMedicaments" class="table table-striped">
+							<thead class="bg-primary text-white">
+								<tr>
+									<th>Nombre</th>
+									<th>Precio</th>
+									<th>Cantidad</th>
+									<th>Total</th>
+									<th>Eliminar</th>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
+					</div>
+					<table th:replace="voucher/template-voucherdetail::detailVoucher"></table>
+				</div>
+			</div>
+			<div class="form-group row">
+				<div class="col-sm-6">
+					<h5 id="total">
+						Total<span class="badge badge-primary" id="gran_total">0</span>
+					</h5>
+				</div>
+			</div>
+			<div class="form-group row">
+				<div class="col-sm-6">
+					<input type="submit" value="Registrar" class="btn btn-primary" />
+				</div>	
+			</div>
+		</form>
+	</div>
+
+	<footer th:replace="layout/layout :: footer"></footer>
+	<script th:replace="voucher/js/autocomplete-medicines::javascript"></script>
+</body>
+</html>

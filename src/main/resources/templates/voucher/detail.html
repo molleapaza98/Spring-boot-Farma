@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/layout :: head"></head>
+<body>
+
+	<header th:replace="layout/layout :: header"></header>
+
+	<div class="container py-4">
+
+
+		<div class="card">
+			<div class="card-header text-white bg-primary">Datos Voucher</div>
+			<div class="card-body">
+
+				<ul class="list-group my-2">
+					<li
+						class="list-group-item list-group-item-primary bg-primary text-white">Paciente</li>
+					<li class="list-group-item"
+						th:text="${voucher.patientId.firstname}"></li>
+					<li class="list-group-item" th:text="${voucher.patientId.lastname}"></li>
+					<li class="list-group-item" th:text="${voucher.patientId.dni}"></li>
+				</ul>
+
+				<ul class="list-group my-2">
+					<li
+						class="list-group-item list-group-item-primary bg-primary text-white">Voucher</li>
+					<li class="list-group-item" th:text="'Numero ' + ${voucher.id}"></li>
+					<li class="list-group-item"
+						th:text="'Fecha ' + ${voucher.createAt}"></li>
+				</ul>
+				<div class="table-responsive">
+					<div class="alert alert-info my-4"
+						th:if="${#lists.isEmpty(voucher.voucherDetail)}"
+						th:text="El voucher no tiene detalle"></div>
+
+					<a th:href="@{'/patients/detail/' + ${voucher.patientId.id}}"
+						class="btn btn-primary">Regresar</a>
+
+					<table th:if="${not #lists.isEmpty(voucher.voucherDetail)}"
+						class="table table-striped">
+						<thead class="bg-primary text-white">
+							<tr>
+								<th>Medicamento</th>
+								<th>Precio</th>
+								<th>Cantidad</th>
+								<th>Importe</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="line: ${voucher.voucherDetail}">
+								<td th:text="${line.medicineId.name}"></td>
+								<td th:text="${line.medicineId.price}"></td>
+								<td th:text="${line.quantity}"></td>
+								<td th:text="${line.calculateAmount()}"></td>
+							</tr>
+						</tbody>
+
+					</table>
+
+					<h5 class="float-right">
+						Total <span th:text="${voucher.total}"
+							class="badge badge-secondary"></span>
+					</h5>
+				</div>
+			</div>
+		</div>
+
+	</div>
+	<footer th:replace="layout/layout :: footer"></footer>
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="layout/layout :: head"></head>
+<body>
+	<header th:replace="layout/layout :: header"></header>
+	
+	<div class="container">
+		<div class="card">
+			<div class="card-header text-white bg-primary">Datos Paciente</div>
+			<div class="card-body">
+				<ul class="list-group">
+  					<li class="list-group-item " th:text="${patient.firstname}"></li>
+  					<li class="list-group-item " th:text="${patient.lastname}"></li>
+  					<li class="list-group-item " th:text="${patient.dni}"></li>
+				</ul>
+				<a th:href="@{/patients/list}" class="btn btn-primary">Regresar</a>
+			</div>
+		</div>
+		<div class="card">
+			<div class="card-header text-white bg-primary">Signos Vitales</div>
+			<div class="card-body">
+				<div class="table-responsive">
+					<table class="table table-striped">
+						<thead class="bg-primary text-white">
+							<tr>
+								<th>Numero</th>
+								<th>Temperatura</th>
+								<th>Pulso</th>
+								<th>Ritmo Respiratorio</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="sign:${patient.signs}">
+								<td th:text="${sign.id}"></td>
+								<td th:text="${sign.temperature}"></td>
+								<td th:text="${sign.pulse}"></td>
+								<td th:text="${sign.respiratoryRhythm}"></td>
+
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div class="card">
+			<div class="card-header text-white bg-primary">Vouchers</div>
+			<div class="card-body">
+
+				<div class="table-responsive">
+					<div th:if="${#lists.isEmpty(patient.vouchers)}"
+						class="alert alert-info my-4"
+						th:text="'El paciente ' + ${patient.firstname} + ' ' + ${patient.lastname}  +' no tiene vouchers'"></div>
+
+
+					<table th:if="${not #lists.isEmpty(patient.vouchers)}"
+						class="table table-striped">
+						<thead class="bg-primary text-white">
+							<tr>
+								<th>Numero</th>
+								<th>Fecha</th>
+								<th>Total</th>
+								<th>Ver</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="voucher :${patient.vouchers}">
+								<td th:text="${voucher.id}"></td>
+								<td th:text="${voucher.createAt}"></td>
+								<td th:text="${voucher.total}"></td>
+								<td><a class="btn btn-primary"
+									th:href="@{'/vouchers/detail/'+ ${voucher.id}}">Detalle</a></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<footer th:replace="layout/layout :: footer"></footer>
+</body>
+</html>
